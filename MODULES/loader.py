@@ -1,4 +1,4 @@
-from os import path, listdir, getcwd
+from os import path, listdir, getcwd, makedirs
 
 import csv
 import requests
@@ -97,6 +97,15 @@ class IntermovieDataLoader:
         '''
         Ensure if data are already loaded. Download if missing
         '''
+
+        if path.exists(RAW_LOCAL_PATH) == False:
+            try:
+                makedirs(RAW_LOCAL_PATH)
+            except OSError:
+                print ("Creation of the directory %s failed" % RAW_LOCAL_PATH)
+                exit(1)
+            else:
+                print ("Successfully created the directory %s " % RAW_LOCAL_PATH)
 
         if path.exists(ZIP_LOCAL_PATH) == False:
             self._download_data()
