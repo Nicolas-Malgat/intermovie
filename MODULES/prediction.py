@@ -7,6 +7,7 @@ import sklearn
 from sklearn import metrics
 from sklearn import preprocessing
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import LabelEncoder
 from sklearn import svm
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
