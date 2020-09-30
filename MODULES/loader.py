@@ -31,7 +31,7 @@ class IntermovieDataLoader:
                 profession = row['category']
                 # Open a new file and write the header
                 if profession not in open_files_references:
-                    output_file = open(CURATED_LOCAL_PATH + '{}.csv'.format(profession), 'w', encoding='utf-8', newline='')
+                    output_file = open(CURATED_LOCAL_PATH + 'WORKS/{}.csv'.format(profession), 'w', encoding='utf-8', newline='')
                     dictionary_writer = csv.DictWriter(output_file, fieldnames=file_stream_reader.fieldnames)
                     dictionary_writer.writeheader()
                     open_files_references[profession] = output_file, dictionary_writer
@@ -57,12 +57,38 @@ class IntermovieDataLoader:
                 titleType = row['titleType']
                 # Open a new file and write the header
                 if titleType not in open_files_references:
-                    output_file = open(CURATED_LOCAL_PATH + '{}.csv'.format(titleType), 'w', encoding='utf-8', newline='')
+                    output_file = open(CURATED_LOCAL_PATH + 'FORMATS/{}.csv'.format(titleType), 'w', encoding='utf-8', newline='')
                     dictionary_writer = csv.DictWriter(output_file, fieldnames=file_stream_reader.fieldnames)
                     dictionary_writer.writeheader()
                     open_files_references[titleType] = output_file, dictionary_writer
                 # Always write the row
                 open_files_references[titleType][1].writerow(row)
+            # Close all the files
+            for output_file, _ in open_files_references.values():
+                output_file.close()
+
+    def split_data_origine(self):
+        '''
+        Break raw data into many files
+        '''
+        
+        TITLE_FILE_NAME = 'original_titles_regions.csv'
+
+        with open(CURATED_LOCAL_PATH + TITLE_FILE_NAME, encoding='utf-8') as file_stream:    
+            file_stream_reader = csv.DictReader(file_stream, delimiter=',')
+            
+            open_files_references = {}
+
+            for row in file_stream_reader:
+                region = row['region']
+                # Open a new file and write the header
+                if region not in open_files_references:
+                    output_file = open(CURATED_LOCAL_PATH + 'REGIONS/{}.csv'.format(region), 'w', encoding='utf-8', newline='')
+                    dictionary_writer = csv.DictWriter(output_file, fieldnames=file_stream_reader.fieldnames)
+                    dictionary_writer.writeheader()
+                    open_files_references[region] = output_file, dictionary_writer
+                # Always write the row
+                open_files_references[region][1].writerow(row)
             # Close all the files
             for output_file, _ in open_files_references.values():
                 output_file.close()
@@ -79,6 +105,7 @@ class IntermovieDataLoader:
             self._extract_data()
 
         print('Les fichiers sont correctement extraits')
+
 
 
     def _download_data(self):
