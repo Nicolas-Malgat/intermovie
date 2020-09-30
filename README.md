@@ -6,7 +6,7 @@ Brief vers [simplonline](https://simplonline.co/briefs/f9d118c0-bc29-407c-95e4-7
 
 Run the main app ```notebook.ipynb```.
 
-### Other files :
+### Modules :
 ```loader.py``` contains the code used to download and dezip the dataset, and the methods to split the datas.  
 ```prediction.py``` contains the algorithm used to predict the popularity of a movie.
 ```my_timer.py``` is... Just a timer.
