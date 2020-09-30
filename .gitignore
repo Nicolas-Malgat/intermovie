@@ -130,5 +130,6 @@ dmypy.json
 
 
 *.csv
+*.tsv
 .vscode
 .vscode/settings.json
