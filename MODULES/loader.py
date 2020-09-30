@@ -15,7 +15,7 @@ CURATED_LOCAL_PATH = 'DATAS/CURATED/'
 WORKS = 'WORKS/'
 FORMATS = 'FORMATS/'
 REGIONS = 'REGIONS/'
-GENRES = 'REGIONS/'
+MOVIES_GENRES = 'MOVIES_GENRES/'
 
 
 class IntermovieDataLoader:
@@ -124,30 +124,33 @@ class IntermovieDataLoader:
         Break raw data into many files
         '''
         
-        TITLE_FILE_NAME = 'title.basics.tsv'
+        TITLE_FILE_NAME = 'movie.csv'
 
-        with open(RAW_LOCAL_PATH + TITLE_FILE_NAME, encoding='utf-8') as file_stream:    
-            file_stream_reader = csv.DictReader(file_stream, delimiter='\t')
+        with open(CURATED_LOCAL_PATH + FORMATS + TITLE_FILE_NAME, encoding='utf-8') as file_stream:    
+            file_stream_reader = csv.DictReader(file_stream, delimiter=',')
             
             open_files_references = {}
-
             for row in file_stream_reader:
-                genre = row['genres']
-                # Open a new file and write the header
-                if path.exists(CURATED_LOCAL_PATH + GENRES) == False:
-                    try:
-                        os.makedirs(CURATED_LOCAL_PATH + GENRES)
-                    except OSError:
-                        print ("Creation of the directory %s failed" % path)
-                        exit(1)
+                list_genres = row['genres'].split(",")
 
-                if genre not in open_files_references:
-                    output_file = open(CURATED_LOCAL_PATH + GENRES +'{}.csv'.format(genre), 'w', encoding='utf-8', newline='')
-                    dictionary_writer = csv.DictWriter(output_file, fieldnames=file_stream_reader.fieldnames)
-                    dictionary_writer.writeheader()
-                    open_files_references[genre] = output_file, dictionary_writer
-                # Always write the row
-                open_files_references[genre][1].writerow(row)
+                for genre in list_genres:
+
+                    # Open a new file and write the header
+                    if path.exists(CURATED_LOCAL_PATH + MOVIES_GENRES) == False:
+                        try:
+                            os.makedirs(CURATED_LOCAL_PATH + MOVIES_GENRES)
+                        except OSError:
+                            print ("Creation of the directory %s failed" % path)
+                            exit(1)
+
+                    if genre not in open_files_references:
+                        output_file = open(CURATED_LOCAL_PATH + MOVIES_GENRES +'{}.csv'.format(genre), 'w', encoding='utf-8', newline='')
+                        dictionary_writer = csv.DictWriter(output_file, fieldnames=file_stream_reader.fieldnames)
+                        dictionary_writer.writeheader()
+                        open_files_references[genre] = output_file, dictionary_writer
+                    # Always write the row
+                    open_files_references[genre][1].writerow(row)
+
             # Close all the files
             for output_file, _ in open_files_references.values():
                 output_file.close()

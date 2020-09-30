@@ -1,14 +1,34 @@
+import pandas as pd
+
+from sklearn.metrics import roc_auc_score
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+import matplotlib
+import sklearn
+from sklearn import metrics
+from sklearn import preprocessing
+from sklearn.preprocessing import StandardScaler
+from sklearn import svm
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import cross_val_score, GridSearchCV
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+import matplotlib.pyplot as plt
+
+
 class IntermoviePrediction:
 
-    def prediction(self, id):
+    def predict(self, global_dataset, id):
         """Predict the popularity of a movie, using its tconst.
 
         Args:
+            global_dataset ([dataframe]): dataframe with all the movies features
             id ([str]): tconst (like tt000001)
         """
         # *********** DEBUT DE LA PREPARATION DES DONNEES DE REFERENCE *********
         # Récupération des données de la BDD.
-        dataset = #DATAFRAME_GLOBAL
+        dataset = global_dataset
         # Vérification des valeurs nulles :
         print('NOMBRE DE VALEURS NULLES :\n', dataset.isnull().sum())
         print('*******************')
@@ -17,8 +37,8 @@ class IntermoviePrediction:
 
         # *********** DEBUT REGRESSION LOGISTIQUE **********
         # création de tableaux de features et cibles
-        x = #df caractéristiques sans popularité
-        y = #df popularités (à partir d'un nb de votes)
+        x = global_dataset[['actors', 'isAdult', 'startYear', 'runtimeMinutes', 'genres', 'producer', 'writer', 'composer', 'region']]
+        y = global_dataset[['averageRating']]
 
         # Split du dataset en test et set.
         x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(x, y, test_size = 0.20, random_state=0)
@@ -36,12 +56,12 @@ class IntermoviePrediction:
         y_pred = classifier.predict(x_test)
 
         # Sélection des valeurs d'une musique à tester.
-        x_movie = #df des caractéristiques d'un film sans pop
+        x_movie = global_dataset[global_dataset.index==id]
         x_movie = sc.transform(x_movie)
         y_movie = classifier.predict(x_movie)
 
         # Seulement pour vérifier la valeur.
-        # pop_movie = #valeur réelle de la pop du film qu'on test
+        pop_movie = x_movie.averageRating
 
         print('popularité estimée de la musique : ', y_movie)
         print('popularité réelle de la musique : ', pop_movie)
@@ -49,4 +69,4 @@ class IntermoviePrediction:
         print('Précision du test : ', precision)
         # *********** FIN REGRESSION LOGISTIQUE **********
 
-    return y_movie
+        return y_movie
