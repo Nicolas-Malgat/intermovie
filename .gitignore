@@ -133,3 +133,5 @@ dmypy.json
 *.tsv
 .vscode
 .vscode/settings.json
+
+DATAS/movies_dataset/movies_dataset.zip
