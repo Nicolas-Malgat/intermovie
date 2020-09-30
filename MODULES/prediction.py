@@ -3,15 +3,12 @@ import pandas as pd
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
-import matplotlib
 import sklearn
 from sklearn import metrics
 from sklearn import preprocessing
 from sklearn.preprocessing import StandardScaler
 from sklearn import svm
 from sklearn.metrics import accuracy_score
-from sklearn.model_selection import cross_val_score, GridSearchCV
-from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 import matplotlib.pyplot as plt
@@ -27,11 +24,11 @@ class IntermoviePrediction:
             id ([str]): tconst (like tt000001)
         """
         # *********** DEBUT DE LA PREPARATION DES DONNEES DE REFERENCE *********
-        # Récupération des données de la BDD.
-        dataset = global_dataset
+        # global_dataset =  pd.util.hash_pandas_object(global_dataset[['actors', 'genres', 'producer', 'writer', 'composer', 'region']], encoding='utf8')
+        global_dataset = global_dataset[['actors', 'genres', 'producer', 'writer', 'composer', 'region']].astype(float)
         # Vérification des valeurs nulles :
-        print('NOMBRE DE VALEURS NULLES :\n', dataset.isnull().sum())
-        print('*******************')
+        # print('NOMBRE DE VALEURS NULLES :\n', dataset.isnull().sum())
+        # print('*******************')
         # *********** FIN DE LA PREPARATION DES DONNEES DE REFERENCE *********
 
 
